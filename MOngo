@@ -1,0 +1,109 @@
+const mongoose = require('mongoose');
+
+main()
+.then(()=>{
+    console.log('MongoDB Connected');
+})
+.catch((err) => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+}
+
+
+//Schema in MongoDB
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  age: Number
+});
+
+//Model
+
+/*
+In simple terms, a model in MongoDB (using Mongoose) is like a blueprint for your data. It defines how data should be stored in the database and provides functions to interact with it.
+
+For example, if you want to store user data, you create a User model that defines fields like name, age, and email. Then, you can easily add, read, update, or delete users in the database using this model.
+*/
+const User = mongoose.model("User", userSchema);
+
+//Inserting
+
+//in genrally we store one data at a time 
+//so focusing on that!!
+
+const user = new User({
+  name: "Vansaj Rawat",
+  email: "vnshajrawat951@gmail.com",
+  age : 21
+});
+
+//.save () is used to save the data in the database
+//and it returns a promise
+//.then() is used to handle the promise
+//.catch() is used to handle the error
+
+user.save().then(() => {
+  console.log("User saved");
+}
+).catch((err) => {
+  console.log(err);
+}
+);
+// there is also a function called User.insertMany() which is used to insert multiple data at a time.. but ingernrally not using it
+
+/*NOTE
+Operational Buffering :- Operational buffering in MongoDB means storing tasks temporarily when the database is busy or slow. Instead of failing, MongoDB keeps the tasks in memory and completes them later when the system is free. This helps to avoid losing data and keeps things running smoothly.
+*/
+
+//Find
+// it does not return promise but it returns a query object
+//.then() is also applicable here 
+User.find().then((users) => {
+  console.log(users);
+}
+).catch((err) => {
+  console.log(err);
+}
+);
+//User.findOne(), user.findById()
+
+//UPDATE
+
+User.updateOne({ name: "Vansaj Rawat" }, { age: 22 }).then(() => {
+  console.log("Updated");
+}
+).catch((err) => {
+  console.log(err);
+}
+); 
+
+//it will update the first data with the name "Vansaj Rawat"
+
+//FIND AND UPDATE
+/*
+User.findOneAndUpdate({ name: "Vansaj Rawat" }, { age: 23 }).then(() => {
+  console.log("Updated");
+}
+).catch((err) => {
+  console.log(err);
+}
+);
+*/
+
+//DELETE
+//User.deleteOne(), User.deleteMany()
+/*User.deleteOne({ name: "Vansaj Rawat" }).then(() => {
+  console.log("Deleted");
+}
+).catch((err) => {
+  console.log(err);
+}
+);
+*/
+
+/*
+SCHEMA VALIDATION:- 
+*/
