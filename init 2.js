@@ -1,3 +1,4 @@
+//init.js is used to set up the database and add default data when the project starts.
 const mongoose = require('mongoose');
 const chat = require('./Models/chat.js');
 main().then(() =>{
@@ -40,18 +41,7 @@ let chats = [{
     created_at : new Date()
 }];
 
-async function insertChats() {
-    try {
-        await chat.deleteMany({}); // Delete old chats
-        console.log("Old chats deleted!");
-
-        await chat.insertMany(chats);
-        console.log("Chats inserted successfully!");
-
-        mongoose.connection.close();
-    } catch (error) {
-        console.log("Error inserting chats:", error);
-    }
+chat.insertMany(chats).then((res)=>{
+    console.log(res);
 }
-
-insertChats();
+);
