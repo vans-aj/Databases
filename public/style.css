@@ -12,3 +12,7 @@
 .chat p {
     margin: 0 10px;
 }
+.msg{
+    background-color: rgb(97, 97, 162);
+    color: white;
+}
